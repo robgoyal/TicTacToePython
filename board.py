@@ -3,8 +3,6 @@
 # Last-Modified: December 9, 2017
 # Purpose: Implement the Board class for the game
 
-from player import Player
-
 
 class Board(object):
 
@@ -17,7 +15,6 @@ class Board(object):
     def getWinner(self):
         '''
         return -> Player
-
         return the player mark if a player has won
         '''
 
@@ -102,28 +99,3 @@ class Board(object):
         # Set the status of the winner if winner placed a game winning piece
         if self.checkWinner(player):
             self.setWinner(player)
-
-
-def main():
-    board = Board()
-    board.printBoard()
-
-    players = [Player("X", board), Player("O", board)]
-    turns = 0
-
-    while (board.getWinner() is None) and turns < 9:
-        print("Turns: {}".format(turns))
-        print(board.board)
-        print(board.winner)
-        board.printBoard()
-        players[turns % 2] .takeTurn()
-        turns += 1
-
-    if turns == 9:
-        print("No Winner!")
-    else:
-        print("Player {} Won!".format(board.getWinner().getMark()))
-
-
-if __name__ == "__main__":
-    main()

@@ -26,23 +26,23 @@ class Player(object):
         '''
 
         try:
-            prompt = "Player {}'s turn. Choose row and column of mark: "
+            prompt = "Player {}'s turn. Choose row and column for your turn: "
             x, y = map(int, input(prompt.format(self.mark)).strip().split())
 
         except ValueError:
-            print("\tYou must provide two values separated by a space!")
-
             # Initialize x and y to -1 to enter while loop
             x, y = -1, -1
 
         # If the location isn't valid, the while loop condition will short circuit
         while not(self.board.isLocationValid(x, y) and self.board.isLocationEmpty(x, y)):
-            prompt = "\tThat location isn't valid! Choose another row and column for mark: "
+            prompt = "\tThat location isn't valid! Choose another row and column for your turn: "
 
             try:
                 x, y = map(int, input(prompt.format(self.mark)).strip().split())
+
+            # Except error where user provided a single value. Continue to next iteration of loop
             except ValueError:
-                print("\tYou must provide two values separated by a space!")
                 continue
 
+        print()
         self.board.placeMark(self, x, y)
