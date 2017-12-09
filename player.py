@@ -25,9 +25,24 @@ class Player(object):
         Only applies the mark is the position is empty.
         '''
 
-        x, y = map(int, input("Player {}'s turn. Choose location of mark: ".format(self.mark)).strip().split())
+        try:
+            prompt = "Player {}'s turn. Choose row and column of mark: "
+            x, y = map(int, input(prompt.format(self.mark)).strip().split())
 
-        while not(self.board.isLocationEmpty(x, y)):
-            x, y = map(int, input("That location isn't empty! Choose another: ".format(self.mark)).strip.split())
+        except ValueError:
+            print("\tYou must provide two values separated by a space!")
+
+            # Initialize x and y to -1 to enter while loop
+            x, y = -1, -1
+
+        # If the location isn't valid, the while loop condition will short circuit
+        while not(self.board.isLocationValid(x, y) and self.board.isLocationEmpty(x, y)):
+            prompt = "\tThat location isn't valid! Choose another row and column for mark: "
+
+            try:
+                x, y = map(int, input(prompt.format(self.mark)).strip().split())
+            except ValueError:
+                print("\tYou must provide two values separated by a space!")
+                continue
 
         self.board.placeMark(self, x, y)

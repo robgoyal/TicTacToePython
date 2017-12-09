@@ -25,21 +25,23 @@ class TicTacToe(object):
         Play a game of Tic Tac Toe after random choosing a player
         '''
 
-        print("This is a game of TicTacToe!")
-        print("Randomly choosing a Player!")
+        print("Welcome to a game of TicTacToe! When prompted to enter a location for your turn, the rows and columns are zero indexed.Enter the values with a space in between and each value between 0 and 2.\n")
 
         firstPlayer = self.players[self.firstTurn]
-        print("The first player is Player {}\n".format(firstPlayer.getMark()))
+        print("Randomly choosing a Player! The first player is Player {}\n".format(firstPlayer.getMark()))
+
+        self.gameBoard.printBoard()
 
         turns = 0
         while(self.gameBoard.getWinner() is None) and turns < 9:
-            print("Turns: {}".format(turns))
-            self.gameBoard.printBoard()
+
+            # Begin turn at player with the first turn
             self.players[(turns + self.firstTurn) % 2].takeTurn()
+            self.gameBoard.printBoard()
             turns += 1
 
         if turns == 9:
-            print("No Winner")
+            print("No Winner!")
         else:
             print("Player {} Won!".format(self.gameBoard.getWinner().getMark()))
 
