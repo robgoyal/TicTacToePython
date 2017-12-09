@@ -28,27 +28,28 @@ class Board(object):
 
         self.winner = player
 
-    def checkWinner(self, player):
+    def checkWinner(self, player, x, y):
         '''
-        player -> Player
+        x -> int: row of board
+        y -> int: col of board
         return -> bool
 
         Check if the player that made a move has won
         '''
 
         grid = self.board
-        piece = player.getMark()
 
-        top_row = (grid[0][0] == piece) and (grid[0][1] == piece) and (grid[0][2] == piece)
-        mid_row = (grid[1][0] == piece) and (grid[1][1] == piece) and (grid[1][2] == piece)
-        bot_row = (grid[2][0] == piece) and (grid[2][1] == piece) and (grid[2][2] == piece)
-        left_col = (grid[0][0] == piece) and (grid[1][0] == piece) and (grid[2][0] == piece)
-        mid_col = (grid[0][1] == piece) and (grid[1][1] == piece) and (grid[2][1] == piece)
-        right_col = (grid[2][0] == piece) and (grid[2][1] == piece) and (grid[2][2] == piece)
-        left_diag = (grid[0][0] == piece) and (grid[1][1] == piece) and (grid[2][2] == piece)
-        right_diag = (grid[2][0] == piece) and (grid[1][1] == piece) and (grid[0][2] == piece)
+        # Optimized solution retrieved from
+        # https://codereview.stackexchange.com/questions/24764/tic-tac-toe-victory-check
 
-        return any([top_row, mid_row, bot_row, left_col, mid_col, right_col, left_diag, right_diag])
+        # Don't need to check rows and columns where the move wasn't made
+        # Adapted solution to check that the values aren't equal to None
+        rows = grid[x][0] == grid[x][1] == grid[x][2] == player.getMark()
+        cols = grid[0][y] == grid[1][y] == grid[2][y] == player.getMark()
+        prim_diag = grid[0][0] == grid[1][1] == grid[2][2] == player.getMark()
+        sec_diag = grid[0][2] == grid[1][1] == grid[2][0] == player.getMark()
+
+        return any([rows, cols, prim_diag, sec_diag])
 
     def isLocationValid(self, x, y):
         '''
@@ -97,5 +98,5 @@ class Board(object):
         self.board[x][y] = player.getMark()
 
         # Set the status of the winner if winner placed a game winning piece
-        if self.checkWinner(player):
+        if self.checkWinner(player, x, y):
             self.setWinner(player)
